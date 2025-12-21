@@ -4,3 +4,4 @@ numpy
 plotly
 matplotlib
 yfinance
+streamlit_option_menu
