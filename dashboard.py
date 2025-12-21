@@ -176,10 +176,11 @@ def tv_news(height=520):
 # Data helpers
 # ====================================================
 
+@st.cache_data(ttl=24*60*60, show_spinner=False)  # refresh auto toutes les 24h
 def download_data(tickers, start_date=None, end_date=None, interval="1d"):
     """
     Download adjusted close prices from Yahoo Finance.
-    Returns a DataFrame with one column per ticker.
+    Cached for 24h to reduce API calls and enable daily refresh behavior on Streamlit Cloud.
     """
     data = yf.download(
         tickers, start=start_date, end=end_date, interval=interval,
@@ -438,9 +439,11 @@ def plot_rsi(rsi: pd.Series, height=220):
 # FRED helpers
 # ====================================================
 
+@st.cache_data(ttl=24*60*60, show_spinner=False)  # refresh auto toutes les 24h
 def fred_get(series_id, start="1990-01-01"):
     """
     Download a FRED time series and return it as a pandas Series.
+    Cached for 24h to avoid repeated calls and allow daily refresh.
     """
     r = requests.get(
         "https://api.stlouisfed.org/fred/series/observations",
